@@ -6,6 +6,7 @@ import com.socialmedia.miniinstagram.dto.PostUpdateRequest;
 import com.socialmedia.miniinstagram.entity.Post;
 import com.socialmedia.miniinstagram.entity.User;
 import com.socialmedia.miniinstagram.service.PostService;
+import com.socialmedia.miniinstagram.service.LikeService;   // 🔹 EKLENDİ
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final LikeService likeService;
 
     // POST /api/posts → Post oluşturma (resim + açıklama)
     @PostMapping
@@ -72,5 +74,25 @@ public class PostController {
     public ResponseEntity<?> incrementView(@PathVariable Long id) {
         postService.incrementViewCount(id);
         return ResponseEntity.ok("View count increased");
+    }
+
+    // POST /api/posts/{id}/likes → Postu beğenme (kullanıcı başına tek beğeni)
+    @PostMapping("/{id}/likes")
+    public ResponseEntity<?> likePost(
+            @PathVariable Long id,
+            @RequestAttribute("currentUser") User currentUser) {
+
+        int likeCount = likeService.likePost(id, currentUser);
+        return ResponseEntity.ok("Post liked. Current like count = " + likeCount);
+    }
+
+    // DELETE /api/posts/{id}/likes → Beğeniyi geri alma
+    @DeleteMapping("/{id}/likes")
+    public ResponseEntity<?> unlikePost(
+            @PathVariable Long id,
+            @RequestAttribute("currentUser") User currentUser) {
+
+        int likeCount = likeService.unlikePost(id, currentUser);
+        return ResponseEntity.ok("Like removed. Current like count = " + likeCount);
     }
 }
