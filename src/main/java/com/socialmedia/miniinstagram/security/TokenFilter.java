@@ -62,6 +62,9 @@ public class TokenFilter extends HttpFilter {
             return;
         }
 
+        var user = token.getUser();
+        request.setAttribute("currentUser", user);
+
         // Token geçerli → request normal devam eder
         chain.doFilter(request, response);
     }

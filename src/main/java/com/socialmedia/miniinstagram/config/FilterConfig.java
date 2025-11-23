@@ -16,8 +16,8 @@ public class FilterConfig {
     public FilterRegistrationBean<TokenFilter> tokenFilterRegistration() {
         FilterRegistrationBean<TokenFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(tokenFilter);
-        registrationBean.addUrlPatterns("/api/*"); // tüm API için geçerli
-        registrationBean.setOrder(1); // önce bu filter çalışsın
+        registrationBean.addUrlPatterns("/api/*");
+        registrationBean.setOrder(1);
         return registrationBean;
     }
 }
