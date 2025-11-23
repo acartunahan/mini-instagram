@@ -20,7 +20,7 @@ public class AuthToken {
     private String token;
 
     // Birden çok token bir user'a ait olabilir hem telden hem pc den falan girer.
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
