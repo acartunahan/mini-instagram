@@ -5,9 +5,11 @@ import com.socialmedia.miniinstagram.dto.LoginResponse;
 import com.socialmedia.miniinstagram.dto.PublicUserProfile;
 import com.socialmedia.miniinstagram.dto.SignupRequest;
 import com.socialmedia.miniinstagram.entity.User;
+import com.socialmedia.miniinstagram.exception.AppException;
 import com.socialmedia.miniinstagram.service.AuthService;
 import com.socialmedia.miniinstagram.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +22,9 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public String signup(@RequestBody SignupRequest request) {
+    public ResponseEntity<?> signup(@RequestBody SignupRequest request) {
         authService.signup(request);
-        return "User created successfully";
+        return ResponseEntity.ok("User created successfully");
     }
 
     @PostMapping("/login")
@@ -31,22 +33,22 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public String logout(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) {
 
-        if (!authHeader.startsWith("Bearer ")) {
-            throw new RuntimeException("Missing Bearer token");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new AppException("Missing Bearer token", HttpStatus.UNAUTHORIZED);
         }
 
         String token = authHeader.substring(7);
         authService.logout(token);
-        return "Logged out successfully";
+
+        return ResponseEntity.ok("Logged out successfully");
     }
 
     @GetMapping("/me")
     public ResponseEntity<PublicUserProfile> me(
             @RequestAttribute("currentUser") User currentUser) {
 
-        PublicUserProfile profile = userService.getPublicProfile(currentUser.getId());
-        return ResponseEntity.ok(profile);
+        return ResponseEntity.ok(userService.getPublicProfile(currentUser.getId()));
     }
 }

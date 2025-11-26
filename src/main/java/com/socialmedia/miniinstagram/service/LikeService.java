@@ -3,9 +3,11 @@ package com.socialmedia.miniinstagram.service;
 import com.socialmedia.miniinstagram.entity.Like;
 import com.socialmedia.miniinstagram.entity.Post;
 import com.socialmedia.miniinstagram.entity.User;
+import com.socialmedia.miniinstagram.exception.AppException;
 import com.socialmedia.miniinstagram.repository.LikeRepository;
 import com.socialmedia.miniinstagram.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +20,11 @@ public class LikeService {
 
     @Transactional
     public int likePost(Long postId, User currentUser) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
 
-        boolean alreadyLiked = likeRepository.findByPostAndUser(post, currentUser).isPresent();
-        if (alreadyLiked) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new AppException("Post not found", HttpStatus.NOT_FOUND));
+
+        if (likeRepository.findByPostAndUser(post, currentUser).isPresent()) {
             return post.getLikeCount();
         }
 
@@ -39,11 +41,12 @@ public class LikeService {
 
     @Transactional
     public int unlikePost(Long postId, User currentUser) {
+
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new AppException("Post not found", HttpStatus.NOT_FOUND));
 
         Like like = likeRepository.findByPostAndUser(post, currentUser)
-                .orElseThrow(() -> new RuntimeException("Like not found"));
+                .orElseThrow(() -> new AppException("Like not found", HttpStatus.NOT_FOUND));
 
         likeRepository.delete(like);
 

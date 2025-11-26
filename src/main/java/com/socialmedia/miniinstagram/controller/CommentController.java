@@ -17,27 +17,20 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    // POST /api/posts/{id}/comments
     @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<CommentResponse> addComment(
             @PathVariable Long postId,
             @RequestAttribute("currentUser") User currentUser,
             @RequestBody CommentCreateRequest req) {
 
-        CommentResponse resp = commentService.addComment(postId, currentUser, req);
-        return ResponseEntity.ok(resp);
+        return ResponseEntity.ok(commentService.addComment(postId, currentUser, req));
     }
 
-    // GET /api/posts/{id}/comments
     @GetMapping("/posts/{postId}/comments")
-    public ResponseEntity<List<CommentResponse>> getComments(
-            @PathVariable Long postId) {
-
-        List<CommentResponse> comments = commentService.getCommentsForPost(postId);
-        return ResponseEntity.ok(comments);
+    public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long postId) {
+        return ResponseEntity.ok(commentService.getCommentsForPost(postId));
     }
 
-    // DELETE /api/comments/{id}
     @DeleteMapping("/comments/{id}")
     public ResponseEntity<?> deleteComment(
             @PathVariable Long id,

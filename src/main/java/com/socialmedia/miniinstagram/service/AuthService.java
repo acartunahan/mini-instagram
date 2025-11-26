@@ -5,11 +5,13 @@ import com.socialmedia.miniinstagram.dto.LoginResponse;
 import com.socialmedia.miniinstagram.dto.SignupRequest;
 import com.socialmedia.miniinstagram.entity.AuthToken;
 import com.socialmedia.miniinstagram.entity.User;
+import com.socialmedia.miniinstagram.exception.AppException;
 import com.socialmedia.miniinstagram.model.Role;
 import com.socialmedia.miniinstagram.repository.AuthTokenRepository;
 import com.socialmedia.miniinstagram.repository.UserRepository;
 import com.socialmedia.miniinstagram.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,11 +24,10 @@ public class AuthService {
     private final AuthTokenRepository authTokenRepository;
     private final TokenGenerator tokenGenerator;
 
-    // ---------------- SIGNUP ----------------
     public User signup(SignupRequest request) {
 
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username already exists");
+            throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
         }
 
         User user = new User();
@@ -37,35 +38,30 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    // ---------------- LOGIN ----------------
     public LoginResponse login(LoginRequest request) {
 
         User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("Invalid username or password"));
+                .orElseThrow(() -> new AppException("Invalid username or password", HttpStatus.UNAUTHORIZED));
 
-        // Şifre doğru mu kontrol et
         if (!PasswordUtil.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid username or password");
+            throw new AppException("Invalid username or password", HttpStatus.UNAUTHORIZED);
         }
 
-        // Yeni token üret
         String tokenStr = tokenGenerator.generateToken();
 
         AuthToken token = new AuthToken();
         token.setToken(tokenStr);
         token.setUser(user);
-        token.setExpiresAt(LocalDateTime.now().plusHours(2)); // 2 saat geçerli
-
+        token.setExpiresAt(LocalDateTime.now().plusHours(2));
         authTokenRepository.save(token);
 
         return new LoginResponse(tokenStr, token.getExpiresAt().toString());
     }
 
-    // ---------------- LOGOUT ----------------
     public void logout(String tokenStr) {
 
         AuthToken token = authTokenRepository.findByToken(tokenStr)
-                .orElseThrow(() -> new RuntimeException("Invalid token"));
+                .orElseThrow(() -> new AppException("Invalid token", HttpStatus.UNAUTHORIZED));
 
         token.setRevoked(true);
         authTokenRepository.save(token);

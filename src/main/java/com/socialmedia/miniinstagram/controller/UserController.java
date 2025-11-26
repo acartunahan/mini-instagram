@@ -15,19 +15,9 @@ public class UserController {
 
     private final UserService userService;
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserPublicProfile(@PathVariable Long id) {
-        User user = userService.getById(id);
-
-        PublicUserProfile dto = new PublicUserProfile(
-                user.getId(),
-                user.getUsername(),
-                user.getPosts() != null ? user.getPosts().size() : 0,
-                user.getCreatedAt()
-        );
-
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<PublicUserProfile> getUserPublicProfile(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getPublicProfile(id));
     }
 
     @PutMapping("/me/password")
@@ -36,7 +26,7 @@ public class UserController {
             @RequestBody PasswordUpdateRequest req) {
 
         userService.updatePassword(currentUser.getId(), req.getOldPassword(), req.getNewPassword());
-        return ResponseEntity.ok("Password updated successfully.");
+        return ResponseEntity.ok("Password updated successfully");
     }
 
     @DeleteMapping("/me")
@@ -44,6 +34,6 @@ public class UserController {
             @RequestAttribute("currentUser") User currentUser) {
 
         userService.deleteOwnAccount(currentUser.getId());
-        return ResponseEntity.ok("Account deleted.");
+        return ResponseEntity.ok("Account deleted");
     }
 }
