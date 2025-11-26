@@ -6,7 +6,7 @@ Bu proje, verilen gereksinimler doğrultusunda Spring Security KULLANMADAN token
 Tüm API istekleri Postman Collection olarak teslim edilmektedir.
 
 
-🏁 Kurulum 
+# 🏁 Kurulum 
 
 Java Version: 21
 Spring Boot Version: 3.5.8
@@ -26,7 +26,7 @@ MiniInstagramApplication sınıfını açın
 
 main metodunun yanındaki Run (▶️) butonuna basın.
 
-# Terminalden çalıştırmak için:
+Terminalden çalıştırmak için:
 ./mvnw spring-boot:run
 
 
@@ -56,7 +56,7 @@ username: admin
 password: admin123
 role: ADMIN
 
-📦 Postman Collection Açıklaması
+# 📦 Postman Collection Açıklaması
 
 Projeyle birlikte bir Postman Collection teslim edilir. Bu collection içinde: 
 
