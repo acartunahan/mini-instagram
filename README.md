@@ -278,4 +278,5 @@ Kullanıcı adı benzersizdir.
 Bir kullanıcı bir postu yalnızca bir kez beğenebilir.
 
 
+<img width="463" height="653" alt="miniinstagram-erdiagram" src="https://github.com/user-attachments/assets/3fcf96aa-68b3-4e7f-ae3c-bdb402751206" />
 
