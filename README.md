@@ -1,4 +1,4 @@
-📸 Mini Instagram 
+# 📸 Mini Instagram 
 
 Java 17+ · Spring Boot 3+ · PostgreSQL · IntelliJ IDEA · Custom Token Authentication (Spring Security kullanılmadan)
 Bu proje, verilen gereksinimler doğrultusunda Spring Security KULLANMADAN token tabanlı kimlik doğrulama, kullanıcı yönetimi, rol yönetimi ve içerik yönetimi (post, yorum, beğeni) sağlayan Mini Instagram backend uygulamasıdır.
@@ -81,7 +81,7 @@ Aşağıdaki environment değişkenleri tanımlıdır:
 {{accessToken}} → POST /api/auth/login ile alınan token değeri
 
 
-TÜM ENDPOINTLER
+# TÜM ENDPOINTLER
 
 
 🔐 AUTH Endpoints
@@ -181,7 +181,7 @@ Postu beğenir (kullanıcı başına 1 kez).
 Beğeniyi geri alır.
 
 
-🔁 Örnek API Akış Senaryosu
+# 🔁 Örnek API Akış Senaryosu
 
 1.) Kayıt Ol (Signup)
 POST /api/auth/signup
@@ -214,7 +214,7 @@ Mevcut token pasifleştirilir, korumalı endpointlere erişim engellenir.
 
 
 
-⚠️ Hata Yönetimi (Global Exception Handling)
+# ⚠️ Hata Yönetimi (Global Exception Handling)
 
 Uygulamadaki tüm hatalar tek bir standart JSON formatında döner.
 Bunu sağlamak için özel bir global hata yönetimi katmanı uygulandı.
@@ -245,7 +245,7 @@ Kullanıcının kimliği doğrulanmamışsa veya gönderdiği token geçersizse.
 
 
 
-🧩 Varsayımlar & Kısıtlar
+# 🧩 Varsayımlar & Kısıtlar
 
 ⭐ Kullanıcı & Kimlik Doğrulama
 
