@@ -1,4 +1,4 @@
-# 📸 Mini Instagram 
+#  Mini Instagram 
 
 Java 17+ · Spring Boot 3+ · PostgreSQL · IntelliJ IDEA · Custom Token Authentication (Spring Security kullanılmadan)
 Bu proje, verilen gereksinimler doğrultusunda Spring Security KULLANMADAN token tabanlı kimlik doğrulama, kullanıcı yönetimi, rol yönetimi ve içerik yönetimi (post, yorum, beğeni) sağlayan Mini Instagram backend uygulamasıdır.
