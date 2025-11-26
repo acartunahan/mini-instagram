@@ -2,9 +2,13 @@ package com.socialmedia.miniinstagram.controller;
 
 import com.socialmedia.miniinstagram.dto.LoginRequest;
 import com.socialmedia.miniinstagram.dto.LoginResponse;
+import com.socialmedia.miniinstagram.dto.PublicUserProfile;
 import com.socialmedia.miniinstagram.dto.SignupRequest;
+import com.socialmedia.miniinstagram.entity.User;
 import com.socialmedia.miniinstagram.service.AuthService;
+import com.socialmedia.miniinstagram.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserService userService;
 
     @PostMapping("/signup")
     public String signup(@RequestBody SignupRequest request) {
@@ -35,5 +40,13 @@ public class AuthController {
         String token = authHeader.substring(7);
         authService.logout(token);
         return "Logged out successfully";
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<PublicUserProfile> me(
+            @RequestAttribute("currentUser") User currentUser) {
+
+        PublicUserProfile profile = userService.getPublicProfile(currentUser.getId());
+        return ResponseEntity.ok(profile);
     }
 }

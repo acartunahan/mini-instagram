@@ -15,7 +15,7 @@ public class UserController {
 
     private final UserService userService;
 
-    /*
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserPublicProfile(@PathVariable Long id) {
         User user = userService.getById(id);
@@ -23,18 +23,12 @@ public class UserController {
         PublicUserProfile dto = new PublicUserProfile(
                 user.getId(),
                 user.getUsername(),
-                user.getProfileImage(),
-                user.getPosts().size(),
+                user.getPosts() != null ? user.getPosts().size() : 0,
                 user.getCreatedAt()
         );
 
         return ResponseEntity.ok(dto);
     }
-    BURADA İSTENİLEN ŞEY KULLANICI KENDİ PROFİLİNİ Mİ GÖRÜNTÜLESİN YOKSA HERKES BİRBİRİNİN PROFİLİNİ Mİ GÖRÜNTÜLESİN ONU ANLAYAMADIM
-    ONA GÖRE BURAYI ŞEKİLLENDİRECEĞİM BENCE HERKES BİRBİRİNİN PROFİLİNİ GÖRSÜN AMAÇ BU YANİ AMA BAKALIM ŞUANLIK BURASI ????
-
-     */
-
 
     @PutMapping("/me/password")
     public ResponseEntity<?> updatePassword(

@@ -1,5 +1,6 @@
 package com.socialmedia.miniinstagram.service;
 
+import com.socialmedia.miniinstagram.dto.PublicUserProfile;
 import com.socialmedia.miniinstagram.entity.User;
 import com.socialmedia.miniinstagram.model.Role;
 import com.socialmedia.miniinstagram.repository.AuthTokenRepository;
@@ -51,4 +52,16 @@ public class UserService {
         authTokenRepository.deleteByUser(user);
         userRepository.delete(user);
     }
+
+    public PublicUserProfile getPublicProfile(Long userId) {
+        User user = getById(userId);
+
+        return new PublicUserProfile(
+                user.getId(),
+                user.getUsername(),
+                user.getPosts() != null ? user.getPosts().size() : 0,
+                user.getCreatedAt()
+        );
+    }
+
 }

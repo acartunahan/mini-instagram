@@ -41,11 +41,17 @@ public class PostService {
             throw new RuntimeException("You are not allowed to update this post");
         }
 
-        post.setImageUrl(req.getImageUrl());
-        post.setDescription(req.getDescription());
+        if (req.getImageUrl() != null && !req.getImageUrl().isBlank()) {
+            post.setImageUrl(req.getImageUrl());
+        }
+
+        if (req.getDescription() != null && !req.getDescription().isBlank()) {
+            post.setDescription(req.getDescription());
+        }
 
         return postRepository.save(post);
     }
+
 
     public void deletePost(Long id, User currentUser) {
         Post post = getById(id);
